@@ -52,9 +52,28 @@ def pageScrapper(page_id,ncchanged):
         index += 1
 
 
-    print(form)
+#    print(form)
     logger.info(f"Form value: {form}")
 
+
+    return form
+
+
+def get_list_of_candidates():
+    candidates = []
+
+    temp_candidate = (1768083872,pageScrapper(1768083872, 1556378214) )
+    candidates.append(temp_candidate)
+    temp_candidate = (1769624780, pageScrapper(1769624780, 1561748862))
+    candidates.append(temp_candidate)
+    temp_candidate = (1743808828, pageScrapper(1743808828, 1486588017))
+    candidates.append(temp_candidate)
+
+    logger.info("End of process")
+
+    for candidate in candidates:
+        print("*" * 50)
+        print(candidate)
 
     return
 
@@ -64,9 +83,4 @@ if __name__=="__main__":
     logging.basicConfig(filename=LOG_FILE_NAME, level=logging.DEBUG, format=LOG_FORMAT, filemode="w")
     logger = logging.getLogger()
     logger.info("Start of the process")
-    #pageScrapper(1768083872,1556378214)
-    #pageScrapper(1769624780, 1561748862)
-    pageScrapper(1743808828, 1486588017)
-
-
-
+    get_list_of_candidates()
