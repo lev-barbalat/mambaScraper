@@ -23,8 +23,8 @@ def pageScrapper(page_id,ncchanged):
 
 
     languages = soup.findAll(class_= "b-list_item rtl-fix-last-symbol")
-   #for language in languages:
-    #    print(language.string)
+    #for language in languages:
+    #print(language.string)
     #logger.info("After printing")
 
     #site_form = soup.findAll(class_="b-anketa_inset-form clearfix b-anketa_inset-form-js")
@@ -33,13 +33,14 @@ def pageScrapper(page_id,ncchanged):
     for element in site_form:
         #print("*"*50)
         for subelement in element:
+            logger.info(subelement)
             if len (str(subelement))>2:
                 #print(str(subelement.string))
                 fields.append(str(subelement.string))
                 logger.info(str(subelement.string))
 
-        logger.info("End of parsing")
-        logger.info("Starting to create form")
+    logger.info("End of parsing")
+    logger.info("Starting to create form")
 
     last_key = ""
     form = {}
@@ -62,12 +63,10 @@ def pageScrapper(page_id,ncchanged):
 def get_list_of_candidates():
     candidates = []
 
-    temp_candidate = (1768083872,pageScrapper(1768083872, 1556378214) )
-    candidates.append(temp_candidate)
-    temp_candidate = (1769624780, pageScrapper(1769624780, 1561748862))
-    candidates.append(temp_candidate)
-    temp_candidate = (1743808828, pageScrapper(1743808828, 1486588017))
-    candidates.append(temp_candidate)
+
+    #candidates.append(create_candidate_tuple(1768083872,1556378214))
+    candidates.append(create_candidate_tuple(1769624780, 1561748862))
+    #candidates.append(create_candidate_tuple(1743808828, 1486588017))
 
     logger.info("End of process")
 
@@ -77,6 +76,11 @@ def get_list_of_candidates():
 
     return
 
+
+def create_candidate_tuple(page_id, ncchanged):
+    logger.info(f"Creation of canididate tupe: {page_id}")
+    profile_ulr = f"https://www.mamba.ru/mb{page_id}?sp=1&noid={page_id}&nchanged={ncchanged}&nactive=0#/app"
+    return (page_id, profile_ulr, pageScrapper(page_id, ncchanged))
 
 
 if __name__=="__main__":
