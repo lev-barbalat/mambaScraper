@@ -97,11 +97,18 @@ def get_list_of_candidates():
 
     logger.info("Soup completed")
     list_element = soup.findAll("script")
+    list_text = ""
     for element in list_element:
         if  filter_string in str(element):
-            print("*"*100)
-            print(element.string.strip())
+            list_text = element.string.strip()
 
+
+    start_json_data  = list_text.find("data:")+6
+    end_json_data = list_text.find("literals")-10
+    list_text = list_text[start_json_data:end_json_data]
+    print(list_text)
+    list_json = json.loads(list_text)
+    print(list_json)
     return
 
 if __name__=="__main__":
