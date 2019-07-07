@@ -5,6 +5,8 @@ from ScraperExceptions import *
 import re
 import datetime
 import logging
+import json
+
 
 LOG_FILE_NAME = r"C:\PythonExperiments\mambaScraperLog.log"
 LOG_FORMAT = "%(levelname)s %(asctime)s  - %(message)s"
@@ -60,7 +62,7 @@ def pageScrapper(page_id,ncchanged):
     return form
 
 
-def get_list_of_candidates():
+def scrap_list_of_candidates():
     candidates = []
 
 
@@ -83,8 +85,28 @@ def create_candidate_tuple(page_id, ncchanged):
     return (page_id, profile_ulr, pageScrapper(page_id, ncchanged))
 
 
+def get_list_of_candidates():
+    logger.info(f"Starting scrap list of candidates")
+    list_url = f"https://www.mamba.ru/search.phtml?rl=1&from_item=1#/app"
+
+    filter_string = "web-search-infinite_search_results"
+    # "Mb.ComponentManager.initComponent"
+    resp = requests.get(list_url, verify=False)
+    logger.info("Activation of soup")
+    soup = bs(resp.text, 'html.parser')
+
+    logger.info("Soup completed")
+    list_element = soup.findAll("script")
+    for element in list_element:
+        if  filter_string in str(element):
+            print("*"*100)
+            print(element.string.strip())
+
+    return
+
 if __name__=="__main__":
     logging.basicConfig(filename=LOG_FILE_NAME, level=logging.DEBUG, format=LOG_FORMAT, filemode="w")
     logger = logging.getLogger()
     logger.info("Start of the process")
+    #scrap_list_of_candidates()
     get_list_of_candidates()
